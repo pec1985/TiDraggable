@@ -21,14 +21,16 @@ Treat this view as a normal Ti.UI.View, but keeping in mind that this view has t
 
 ## Properties:
 
-1. These will make the view slide to their coresponding positions
-- maxLeft: (int)
-- minLeft: (int)
-- maxTop: (int)
-- minTop: (int)
+### These will make the view slide to their coresponding positions
 
-2. These will make the view stick it's axis:
-- axis: (String) "x" or "y"
+* maxLeft: (int)
+* minLeft: (int)
+* maxTop: (int)
+* minTop: (int)
+
+### These will make the view stick it's axis:
+
+* axis: (String) "x" or "y"
 
 ## Event Listeners
 
@@ -37,5 +39,5 @@ Treat this view as a normal Ti.UI.View, but keeping in mind that this view has t
 
 ---
 
-### TODOS
+## TODOS
 Let's add more functionality to this module. I don't have a list of "todos", but please, feel free to add to it. Be creative, have ideas, submit pull requests.
