@@ -7,7 +7,9 @@ http://www.screenr.com/S3as
 ## How to install the module:
 
 1. Create a new property in tiapp.xml:
+```
     <module version="1.0" platform="iphone">ti.draggable</module>
+```
 2. Copy the zip file to the root of your project.
 3. require the module in your application:
     Ti.Draggable = require('ti.draggable');
@@ -16,7 +18,10 @@ http://www.screenr.com/S3as
 
 ## How to use the module
 To create a draggable view, simple create it like so:
-    var view = Ti.Draggable.createView({ _props });
+```
+   var view = Ti.Draggable.createView({ _props });
+```
+
 Treat this view as a normal Ti.UI.View, but keeping in mind that this view has the draggable properties already build in; if nothing is specified, it will be draggable all over the screen.
 
 ## Properties:
