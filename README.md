@@ -28,7 +28,7 @@ Treat this view as a normal Ti.UI.View, but keeping in mind that this view has t
 * maxTop: (int)
 * minTop: (int)
 
-### These will make the view stick it's axis:
+### This will make the view stick to it's axis:
 
 * axis: (String) "x" or "y"
 
