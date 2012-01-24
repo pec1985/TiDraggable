@@ -35,6 +35,8 @@ var horizontal = Ti.Draggable.createView({
 	maxLeft:win.size.width-100,
 	axis:'x'
 });
+
+
 horizontal.add(Label('horizontal'));
 
 var vertical = Ti.Draggable.createView({
@@ -58,10 +60,17 @@ var free = Ti.Draggable.createView({
 });
 free.add(Label('free'));
 
+free.addEventListener('end', function(e){
+	Ti.API.info(e);
+});
+free.addEventListener('start', function(e){
+	Ti.API.info(e);
+});
+
 
 win.add(vertical);
-win.add(horizontal);
 win.add(free);
+win.add(horizontal);
 
 win.open();
 
