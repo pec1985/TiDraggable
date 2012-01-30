@@ -4,7 +4,8 @@
 
 ## Description
 
-Creates "draggable" views
+* Creates "draggable" views
+* Creates infinite scroll views
 
 ## Accessing the draggable Module
 
@@ -18,6 +19,7 @@ The draggable variable is a reference to the Module object.
 ## Usage
 
 Ti.Draggable.createView( _props );
+Ti.Draggable.createInfiniteScroll( _props );
 
 ## Author
 

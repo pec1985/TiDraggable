@@ -67,6 +67,52 @@ free.addEventListener('start', function(e){
 	Ti.API.info(e);
 });
 
+var views = [];
+var num = 0;
+for(var i = 0; i < 20; i++){
+	num = (i+1);
+	if(num<100){
+		num > 9 ? num='0'+num : num='00'+num;
+	}
+
+	views.push(
+		i % 2 ?
+		Ti.UI.createView({
+			height:100,
+			width:100,
+			backgroundColor:"#"+((1<<24)*Math.random()|0).toString(16)		
+		})
+		:
+		Ti.UI.createImageView({
+			height:100,
+			width:150,
+			image:'http://pec1985.com/tests/album/WallPaper'+num+'.jpg'
+		})
+		
+	);
+}
+var otherView = Ti.UI.createView({
+	width:200,
+	height:75,
+	backgroundColor:'black'
+});
+otherView.add(Ti.UI.createLabel({color:'white',text:'this is a child label'}));
+
+views.push(otherView);
+
+var scroll = Ti.Draggable.createInfiniteScroll({
+	height:100,
+	bottom:0,
+	left:0,
+	right:0,
+	views:views
+});
+
+scroll.addEventListener('click', function(e){
+	Ti.API.info(e);
+});
+
+win.add(scroll);
 
 win.add(vertical);
 win.add(free);

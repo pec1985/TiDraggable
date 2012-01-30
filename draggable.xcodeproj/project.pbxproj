@@ -32,6 +32,12 @@
 		B628753214CBF59E00F6F923 /* TiDraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = B628753014CBF59E00F6F923 /* TiDraggableView.m */; };
 		B628753614CBF5B200F6F923 /* TiDraggableViewProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = B628753414CBF5B200F6F923 /* TiDraggableViewProxy.h */; };
 		B628753714CBF5B200F6F923 /* TiDraggableViewProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = B628753514CBF5B200F6F923 /* TiDraggableViewProxy.m */; };
+		B6F5DA3614D6C96C008CC426 /* TiDraggableInfiniteScroll.h in Headers */ = {isa = PBXBuildFile; fileRef = B6F5DA3414D6C96C008CC426 /* TiDraggableInfiniteScroll.h */; };
+		B6F5DA3714D6C96C008CC426 /* TiDraggableInfiniteScroll.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F5DA3514D6C96C008CC426 /* TiDraggableInfiniteScroll.m */; };
+		B6F5DA4414D702DB008CC426 /* InfiniteScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = B6F5DA4214D702DA008CC426 /* InfiniteScrollView.h */; };
+		B6F5DA4514D702DB008CC426 /* InfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F5DA4314D702DB008CC426 /* InfiniteScrollView.m */; };
+		B6F5DA4814D70350008CC426 /* TiDraggableInfiniteScrollProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = B6F5DA4614D70350008CC426 /* TiDraggableInfiniteScrollProxy.h */; };
+		B6F5DA4914D70350008CC426 /* TiDraggableInfiniteScrollProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F5DA4714D70350008CC426 /* TiDraggableInfiniteScrollProxy.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +63,12 @@
 		B628753414CBF5B200F6F923 /* TiDraggableViewProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TiDraggableViewProxy.h; path = Classes/TiDraggableViewProxy.h; sourceTree = "<group>"; };
 		B628753514CBF5B200F6F923 /* TiDraggableViewProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TiDraggableViewProxy.m; path = Classes/TiDraggableViewProxy.m; sourceTree = "<group>"; };
 		B628753814CBF68500F6F923 /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = app.js; path = example/app.js; sourceTree = "<group>"; };
+		B6F5DA3414D6C96C008CC426 /* TiDraggableInfiniteScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TiDraggableInfiniteScroll.h; path = Classes/TiDraggableInfiniteScroll.h; sourceTree = "<group>"; };
+		B6F5DA3514D6C96C008CC426 /* TiDraggableInfiniteScroll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TiDraggableInfiniteScroll.m; path = Classes/TiDraggableInfiniteScroll.m; sourceTree = "<group>"; };
+		B6F5DA4214D702DA008CC426 /* InfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfiniteScrollView.h; path = Classes/infinitescrollview/InfiniteScrollView.h; sourceTree = "<group>"; };
+		B6F5DA4314D702DB008CC426 /* InfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfiniteScrollView.m; path = Classes/infinitescrollview/InfiniteScrollView.m; sourceTree = "<group>"; };
+		B6F5DA4614D70350008CC426 /* TiDraggableInfiniteScrollProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TiDraggableInfiniteScrollProxy.h; path = Classes/TiDraggableInfiniteScrollProxy.h; sourceTree = "<group>"; };
+		B6F5DA4714D70350008CC426 /* TiDraggableInfiniteScrollProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TiDraggableInfiniteScrollProxy.m; path = Classes/TiDraggableInfiniteScrollProxy.m; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libTiDraggable.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTiDraggable.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -103,6 +115,7 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B6F5DA2E14D6C930008CC426 /* InfniteScroll */,
 				24DE9E0F11C5FE74003F90F6 /* TiDraggableModuleAssets.h */,
 				24DE9E1011C5FE74003F90F6 /* TiDraggableModuleAssets.m */,
 				24DD6CF71134B3F500162E58 /* TiDraggableModule.h */,
@@ -111,6 +124,10 @@
 				B628753014CBF59E00F6F923 /* TiDraggableView.m */,
 				B628753414CBF5B200F6F923 /* TiDraggableViewProxy.h */,
 				B628753514CBF5B200F6F923 /* TiDraggableViewProxy.m */,
+				B6F5DA3414D6C96C008CC426 /* TiDraggableInfiniteScroll.h */,
+				B6F5DA3514D6C96C008CC426 /* TiDraggableInfiniteScroll.m */,
+				B6F5DA4614D70350008CC426 /* TiDraggableInfiniteScrollProxy.h */,
+				B6F5DA4714D70350008CC426 /* TiDraggableInfiniteScrollProxy.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -122,6 +139,15 @@
 				24DD6D1B1134B66800162E58 /* titanium.xcconfig */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		B6F5DA2E14D6C930008CC426 /* InfniteScroll */ = {
+			isa = PBXGroup;
+			children = (
+				B6F5DA4214D702DA008CC426 /* InfiniteScrollView.h */,
+				B6F5DA4314D702DB008CC426 /* InfiniteScrollView.m */,
+			);
+			name = InfniteScroll;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +162,9 @@
 				24DE9E1111C5FE74003F90F6 /* TiDraggableModuleAssets.h in Headers */,
 				B628753114CBF59E00F6F923 /* TiDraggableView.h in Headers */,
 				B628753614CBF5B200F6F923 /* TiDraggableViewProxy.h in Headers */,
+				B6F5DA3614D6C96C008CC426 /* TiDraggableInfiniteScroll.h in Headers */,
+				B6F5DA4414D702DB008CC426 /* InfiniteScrollView.h in Headers */,
+				B6F5DA4814D70350008CC426 /* TiDraggableInfiniteScrollProxy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +242,9 @@
 				24DE9E1211C5FE74003F90F6 /* TiDraggableModuleAssets.m in Sources */,
 				B628753214CBF59E00F6F923 /* TiDraggableView.m in Sources */,
 				B628753714CBF5B200F6F923 /* TiDraggableViewProxy.m in Sources */,
+				B6F5DA3714D6C96C008CC426 /* TiDraggableInfiniteScroll.m in Sources */,
+				B6F5DA4514D702DB008CC426 /* InfiniteScrollView.m in Sources */,
+				B6F5DA4914D70350008CC426 /* TiDraggableInfiniteScrollProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
