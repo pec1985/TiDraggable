@@ -47,9 +47,15 @@
 	width = frame.size.width;
 	height = frame.size.height;
 
-	// minTop and minLeft are the origin of the view
-	minTop = frame.origin.y;
-	minLeft = frame.origin.x;
+	if(!firstTime)
+	{
+		firstTime = YES;
+		// minTop and minLeft are the origin of the view
+		minTop = minTop || frame.origin.y;
+		minLeft = minLeft || frame.origin.x;
+	
+	}
+	[super frameSizeChanged:frame bounds:bounds];
 
 }
 
@@ -88,6 +94,7 @@
 		[self.proxy fireEvent:@"start" withObject:tiProps];
 	}
 
+	[super touchesBegan:touches withEvent:event];
 }
 
 // touchMove event
@@ -128,6 +135,8 @@
 	// get the center of the view to see in chich direction we're moving (after the move)
 	newLeft = self.center.x;
 	newTop = self.center.y;
+
+	[super touchesMoved:touches withEvent:event];
 }
 
 // touchEnd event
@@ -184,6 +193,7 @@
 	// reset the hasMoved flag
 	hasMoved = false;
 
+	[super touchesEnded:touches withEvent:event];
 }
 
 - (void)finishAnimation:(NSString *)animationId finished:(BOOL)finished context:(void *)context
@@ -197,7 +207,8 @@
 									nil];
 		[self.proxy fireEvent:@"end" withObject:tiProps];								
 	}
-	
+	[[super proxy] setValue:[NSNumber numberWithFloat:left] forKey:@"left"];
+	[[super proxy] setValue:[NSNumber numberWithFloat:top] forKey:@"top"];	
 }
 
 // ========================================================================

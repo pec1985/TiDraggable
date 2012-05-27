@@ -23,6 +23,8 @@
 {
 
 	// variables used in the DraggableView
+	BOOL firstTime;
+
 	CGPoint beginCenter;
 
 	CGPoint offset;

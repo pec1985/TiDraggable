@@ -13,7 +13,7 @@ http://www.screenr.com/S3as
 2. Copy the zip file to the root of your project.
 3. require the module in your application:
 ```
-Ti.Draggable = require('ti.draggable');
+var Draggable = require('ti.draggable');
 ```
 4. Clean your build directory
 5. Build.
@@ -24,17 +24,17 @@ To create a draggable view, simple create it like so:
    var view = Ti.Draggable.createView({ _props });
 ```
 
-To create an infite scroll view, create it like this:
+To create an infinite scroll view, create it like this:
 ```
    var scroll = Ti.Draggable.createInfiniteScroll({ _props });
 ```
 
 Treat both of these views as a normal Ti.UI.Views.
-For the dragable view, keep in mind that it has the draggable properties already build in; if nothing is specified, it will be draggable all over the screen.
+For the draggable view, keep in mind that it has the draggable properties already build in; if nothing is specified, it will be draggable all over the screen.
 
 ## Draggable View Properties:
 
-### These will make the view slide to their coresponding positions
+### These will make the view slide to their corresponding positions
 
 * maxLeft: (int)
 * minLeft: (int)
@@ -62,6 +62,11 @@ For the dragable view, keep in mind that it has the draggable properties already
 1. click: will fire on click. It contains an index number of the view clicked as well as a reference to the it.
 
 ---
+
+## What's New in Version 1.1
+
+1. Fixed bug where DraggableView would go to its original position after device rotation.
+2. Call super on touchmove, touchstart, touchend, and framesizechange
 
 ## TODOS
 Let's add more functionality to this module. I don't have a list of "todos", but please, feel free to add to it. Be creative, have ideas, submit pull requests.

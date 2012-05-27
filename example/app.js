@@ -16,7 +16,11 @@
  */
 
 
-Ti.Draggable = require('ti.draggable');
+var Draggable = require('ti.draggable');
+
+var WIDTH = 320;
+var HEIGHT = 460;
+
 var win = Ti.UI.createWindow({
 	backgroundColor:'#ccc'
 });
@@ -25,33 +29,33 @@ function Label(text){
 	return Ti.UI.createLabel({height:20,left:10,right:10,backgroundColor:'white', textAlign:'center', text: text});
 }
 
-var horizontal = Ti.Draggable.createView({
+var horizontal = Draggable.createView({
 	left:0,
 	top:0,
 	width:100,
 	height:100,
 	backgroundColor:'red',
 
-	maxLeft:win.size.width-100,
+	maxLeft:WIDTH-100,
 	axis:'x'
 });
 
 
 horizontal.add(Label('horizontal'));
 
-var vertical = Ti.Draggable.createView({
+var vertical = Draggable.createView({
 	left:0,
 	top:0,
 	width:100,
 	height:100,
 	backgroundColor:'green',
 
-	maxTop:win.size.height-100,
+	maxTop:HEIGHT-100,
 	axis:'y'
 });
 vertical.add(Label('vertical'));
 
-var free = Ti.Draggable.createView({
+var free = Draggable.createView({
 	top:0,
 	left:0,
 	width:100,
@@ -100,7 +104,7 @@ otherView.add(Ti.UI.createLabel({color:'white',text:'this is a child label'}));
 
 views.push(otherView);
 
-var scroll = Ti.Draggable.createInfiniteScroll({
+var scroll = Draggable.createInfiniteScroll({
 	height:100,
 	bottom:0,
 	left:0,
