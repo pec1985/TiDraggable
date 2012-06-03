@@ -1,6 +1,6 @@
 Demo Video:
 
-<iframe src="http://www.twitvid.com/embed.php?guid=LINLT&autoplay=0" title="Twitvid video player " class="twitvid-player" type="text/html" width="480" height="360" frameborder="0"></iframe>
+http://www.screenr.com/2Y08
 
 ---
 
