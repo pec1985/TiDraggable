@@ -2,7 +2,7 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 1.1
+version: 0.9
 apiversion: 2
 description: Ti.Draggable
 author: Pedro Enrique
@@ -13,6 +13,6 @@ copyright: Copyright (c) 2012 by Pedro Enrique
 # these should not be edited
 name: draggable
 moduleid: ti.draggable
-guid: e8c13998-8fa8-4cee-8078-353c27e84d19
-platform: iphone
+guid: b548a1e9-dbc1-48e9-ab85-caaa914fc0ea
+platform: android
 minsdk: 1.8.2

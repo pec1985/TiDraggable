@@ -21,12 +21,12 @@ var Draggable = require('ti.draggable');
 ## How to use the module
 To create a draggable view, simple create it like so:
 ```
-   var view = Ti.Draggable.createView({ _props });
+   var view = Draggable.createView({ _props });
 ```
 
 To create an infinite scroll view, create it like this:
 ```
-   var scroll = Ti.Draggable.createInfiniteScroll({ _props });
+   var scroll = Draggable.createInfiniteScroll({ _props });
 ```
 
 Treat both of these views as a normal Ti.UI.Views.
@@ -48,7 +48,7 @@ For the draggable view, keep in mind that it has the draggable properties alread
 ## Event Listeners
 
 1. start: will fire on touch start
-2. top: will fire on when the view has finished moving
+2. stop: will fire on when the view has finished moving
 
 
 ## Infinite Scroll View Properties:
