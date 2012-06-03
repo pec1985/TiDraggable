@@ -17,16 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
-@Kroll.proxy(creatableInModule=DraggableModule.class, propertyAccessors = {
-	TiC.PROPERTY_TITLE,
-	TiC.PROPERTY_TITLEID,
-	TiC.PROPERTY_COLOR,
-	TiC.PROPERTY_ENABLED,
-	TiC.PROPERTY_FONT,
-	TiC.PROPERTY_IMAGE,
-	TiC.PROPERTY_TEXT_ALIGN,
-	TiC.PROPERTY_VERTICAL_ALIGN
-})
+@Kroll.proxy(creatableInModule=DraggableModule.class)
 public class ViewProxy extends TiViewProxy
 {
 	private static final String LCAT = "TiDraggable";
@@ -108,7 +99,7 @@ public class ViewProxy extends TiViewProxy
 				public boolean onTouch(View v, MotionEvent event) {
 					
 					// Remove for better performance
-					// Log.d(LCAT, "Event: "+event.toString());
+					Log.d(LCAT, "Event: "+event.toString());
 					
 					// Grab the last position of the view if it's already stored, we don't
 					// want to query the view every single time, could be expensive
