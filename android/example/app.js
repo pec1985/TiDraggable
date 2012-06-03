@@ -19,7 +19,8 @@ var Draggable = require('ti.draggable');
 
 var win = Ti.UI.createWindow({
 	backgroundColor:'#ccc',
-	fullscreen: false
+	fullscreen: false,
+	exitOnClose: true
 });
 
 var size = {
@@ -29,7 +30,7 @@ var size = {
 
 function Label(text,touchy){
 	return Ti.UI.createLabel({
-		height:100,left:10,right:10,
+		height:30,left:10,right:10,
 		backgroundColor:'white',
 		textAlign:'center',
 		text: text,
@@ -40,11 +41,11 @@ function Label(text,touchy){
 var horizontal = Draggable.createView({
 	left:0,
 	top:0,
-	width:150,
-	height:150,
+	width:100,
+	height:100,
 	backgroundColor:'red',
 	minLeft: 0,
-	maxLeft: size.width-150,
+	maxLeft: size.width-100,
 	axis:'x'
 });
 
@@ -53,11 +54,11 @@ horizontal.add(Label('horizontal'));
 var vertical = Draggable.createView({
 	left:0,
 	top:0,
-	width:150,
-	height:150,
+	width:100,
+	height:100,
 	backgroundColor:'green',
 	minTop: 0,
-	maxTop: size.height-150,
+	maxTop: size.height-100,
 	axis:'y'
 });
 vertical.add(Label('vertical'));
@@ -65,8 +66,8 @@ vertical.add(Label('vertical'));
 var free = Draggable.createView({
 	top:0,
 	left:0,
-	width:300,
-	height:300,
+	width:100,
+	height:100,
 	backgroundColor:'blue'
 });
 
