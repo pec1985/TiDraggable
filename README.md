@@ -2,7 +2,7 @@
 
 ## Versions:
 - iPhone: 1.1
-- Android: 0.9 - Beta
+- Android: 1.0
 
 ## Description:
 Allows the developer to create a draggable native view without using Javascript to calculate the events.
