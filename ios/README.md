@@ -7,14 +7,18 @@ http://www.screenr.com/S3as
 ## How to install the module:
 
 1. Create a new property in tiapp.xml:
+
 ```
     <module version="1.0" platform="iphone">ti.draggable</module>
 ```
+
 2. Copy the zip file to the root of your project.
 3. require the module in your application:
+
 ```
 var Draggable = require('ti.draggable');
 ```
+
 4. Clean your build directory
 5. Build.
 

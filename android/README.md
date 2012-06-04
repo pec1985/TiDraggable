@@ -9,7 +9,7 @@ http://www.screenr.com/2Y08
 1. Create a new property in tiapp.xml:
 
 ```
-    <module version="0.9" platform="android">ti.draggable</module>
+    <module version="1.0" platform="android">ti.draggable</module>
 ```
 
 2. Copy the zip file found in the ```dist``` folder to the root of your project.
@@ -44,12 +44,17 @@ Keep in mind that the draggable view has the draggable properties already build 
 
 * axis: (String) "x" or "y"
 
-## Event Listeners (not working yet)
+## Event Listeners
 
 1. start: will fire on touch start
-2. stop: will fire on when the view has finished moving
+2. move: will fire on touch move
+3. stop: will fire on touch end
+
+
+## How to build the module from source
+1. Open the ```.classpath``` file and modify the parameters
+2. Do the same thing with the build.properties
+3. Read the Android Module Development Guide found in Appcelerator's wiki
 
 ## TODOS
-- Event listeners
-- Animation
-- More....
+Let's add more functionality to this module. I don't have a list of "todos", but please, feel free to add to it. Be creative, have ideas, submit pull requests.

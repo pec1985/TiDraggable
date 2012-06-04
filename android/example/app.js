@@ -77,4 +77,75 @@ win.add(vertical);
 win.add(free);
 win.add(horizontal);
 
+free.addEventListener('start', function(e){
+	Ti.API.info('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+	Ti.API.info('Event "start"');
+	Ti.API.info('left: '+e.left);
+	Ti.API.info('top:  '+e.top);
+	Ti.API.info('center:'+JSON.stringify(e.center));
+});
+
+free.addEventListener('move', function(e){
+	Ti.API.info('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+	Ti.API.info('Event "move"');
+	Ti.API.info('left: '+e.left);
+	Ti.API.info('top:  '+e.top);
+	Ti.API.info('center:'+JSON.stringify(e.center));
+});
+
+free.addEventListener('end', function(e){
+	Ti.API.info('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+	Ti.API.info('Event "end"');
+	Ti.API.info('left: '+e.left);
+	Ti.API.info('top:  '+e.top);
+	Ti.API.info('center:'+JSON.stringify(e.center));
+});
+
+var unlockBackgroundView = Ti.UI.createView({
+	bottom: 0,
+	left: 0,
+	right: 0,
+	height: 90,
+	touchEnabled:false,
+	backgroundColor: '#666'
+});
+var unlockPlaceHolder = Ti.UI.createView({
+	left:10,
+	top:10,
+	bottom:10,
+	right:10,
+	touchEnabled:false,
+	backgroundColor: '#fff'
+});
+unlockBackgroundView.add(unlockPlaceHolder);
+var unlockView = Draggable.createView({
+	top:0,
+	bottom:0,
+	left:0,
+	width:100,
+	backgroundColor: '#999',
+	borderRadius: 10,
+	axis: 'x',
+	minLeft: 0,
+	maxLeft: size.width-120
+});
+
+unlockView.addEventListener('end', function(e){
+
+	// to unlock it should be: size.width - 100
+	// let's take 20 off from the margins: 10 + 10 = 20
+	// let's take another 10 for some slack
+	// width - 100 - 20 - 10 = width - 130
+
+	if(e.left >= size.width-130){
+		alert('Unlocked!!');
+	}
+	unlockView.animate({left: 0, duration:250}, function(){
+		unlockView.left = 0;
+	});
+});
+
+unlockPlaceHolder.add(unlockView);
+win.add(unlockBackgroundView);
+
 win.open();
