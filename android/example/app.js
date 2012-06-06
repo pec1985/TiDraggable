@@ -98,6 +98,8 @@ free.addEventListener('end', function(e){
 	Ti.API.info('Event "end"');
 	Ti.API.info('left: '+e.left);
 	Ti.API.info('top:  '+e.top);
+	Ti.API.info('directionVertical: '+ e.directionVertical);
+	Ti.API.info('directionHorizontal: '+ e.directionHorizontal);
 	Ti.API.info('center:'+JSON.stringify(e.center));
 });
 
@@ -148,4 +150,68 @@ unlockView.addEventListener('end', function(e){
 unlockPlaceHolder.add(unlockView);
 win.add(unlockBackgroundView);
 
+
+var drawer = Draggable.createView({
+	width: 300,
+	left: size.width-50,
+	height: 500,
+	backgroundColor: 'black',
+	minLeft: size.width-300,
+	maxLeft: size.width-50,
+	axis: 'x'
+});
+
+var table = Ti.UI.createTableView({
+	backgroundColor: 'white',
+	data: [
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'},
+		{title: 'Hello World 1'}
+	],
+	left: 50,
+	right:0,
+	top:0,
+	bototm: 0
+});
+
+drawer.addEventListener('end', function(e){
+	var val = 0;
+	if(e.directionHorizontal == 'right'){
+		val = size.width - 50;
+	} else if(e.directionHorizontal == 'right'){
+		val = size.width - 300;
+	} else if(e.left == size.width - 300){
+		val = size.width - 50;
+	} else {
+		val = size.width - 300;
+	}
+	drawer.animate({left: val, duration: 250}, function(){
+		drawer.left = val;
+	});
+
+	Ti.API.info(e.directionHorizontal);
+	Ti.API.info(e.directionVertical);
+});
+
+drawer.add(table);
+
+win.add(drawer);
 win.open();

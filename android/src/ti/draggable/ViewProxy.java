@@ -41,6 +41,11 @@ public class ViewProxy extends TiViewProxy {
 	public TiCompositeLayout view;
 	private ViewProxy _proxy;
 	private TiCompositeLayout.LayoutParams _layout;
+	private int oldTop = 0;
+	private int oldLeft = 0;
+	private String directionVertical = "neutral";
+	private String directionHorizontal = "neutral";
+
 	private int positionTop = 0;
 	private int positionLeft = 0;
 	private int tempTop = 0;
@@ -115,7 +120,8 @@ public class ViewProxy extends TiViewProxy {
 			 * Logs commented out from OnTouchListener
 			 * It can really impact the performance
 			 */
-			OnTouchListener listener = new OnTouchListener() {@Override
+			OnTouchListener listener = new OnTouchListener() {
+				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					// Log.d(LCAT, "Event: "+event.toString());
 					
@@ -131,8 +137,8 @@ public class ViewProxy extends TiViewProxy {
 					// And declare the ints and reuse them
 					int eventX = Math.round(event.getRawX()),
 						eventY = Math.round(event.getRawY()),
-						_left,
-						_top;
+						_left = 0,
+						_top = 0;
 					
 					// What to do in each case??
 					switch (event.getAction()) {
@@ -215,6 +221,27 @@ public class ViewProxy extends TiViewProxy {
 							_layout.optionLeft = new TiDimension(_left, TiDimension.TYPE_LEFT);
 							_layout.optionTop = new TiDimension(_top, TiDimension.TYPE_LEFT);
 							
+							// now get the direction of the movement:
+							// vertical
+							if(oldTop > _top){
+								directionVertical = "up"+"";
+							} else if(oldTop < _top){
+								directionVertical = "down"+"";
+							} else {
+								directionVertical = "neutral"+"";
+							}
+							// horizontal
+							if(oldLeft > _left){
+								directionHorizontal = "left"+"";
+							} else if(oldLeft < _left){
+								directionHorizontal = "right"+"";
+							} else {
+								directionHorizontal = "neutral"+"";
+							}
+
+							oldTop = _top;
+							oldLeft = _left;
+							
 							// Log.d(LCAT, "MotionEvent.ACTION_MOVE _layout: "+_layout);
 							
 							// set the layout on the view
@@ -260,12 +287,17 @@ public class ViewProxy extends TiViewProxy {
 							view.setLayoutParams(_layout);
 							
 							if (hasListenerEnd) {
-								KrollDict props = new KrollDict();
-								props.put("left", _left);
-								props.put("top", _top);
+
 								KrollDict center = new KrollDict();
+								KrollDict props = new KrollDict();
 								center.put("x", _left + view.getWidth() / 2);
 								center.put("y", _top + view.getHeight() / 2);
+								
+								props.put("left", _left);
+								props.put("top", _top);
+								props.put("directionHorizontal", directionHorizontal);
+								props.put("directionVertical", directionVertical);
+								
 								props.put("center", center);
 								_proxy.fireEvent("end", props);
 							}
@@ -275,7 +307,7 @@ public class ViewProxy extends TiViewProxy {
 						break;
 					}	
 					// Not too sure about this one, true or false?
-					return false;
+					return true;
 				}
 			};
 			
