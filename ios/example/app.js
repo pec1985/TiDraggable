@@ -35,8 +35,8 @@ var horizontal = Draggable.createView({
 	width:100,
 	height:100,
 	backgroundColor:'red',
-
-	maxLeft:WIDTH-100,
+    minLeft:0,
+    maxLeft:WIDTH-100,
 	axis:'x'
 });
 
@@ -49,7 +49,7 @@ var vertical = Draggable.createView({
 	width:100,
 	height:100,
 	backgroundColor:'green',
-
+    minTop:0,
 	maxTop:HEIGHT-100,
 	axis:'y'
 });
@@ -60,6 +60,8 @@ var free = Draggable.createView({
 	left:0,
 	width:100,
 	height:100,
+	canResize:true,
+	canRotate:true,
 	backgroundColor:'blue'
 });
 free.add(Label('free'));

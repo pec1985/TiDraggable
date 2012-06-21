@@ -9,7 +9,7 @@ http://www.screenr.com/S3as
 1. Create a new property in tiapp.xml:
 
 ```
-    <module version="1.0" platform="iphone">ti.draggable</module>
+    <module version="1.2" platform="iphone">ti.draggable</module>
 ```
 
 2. Copy the zip file to the root of your project.
@@ -49,6 +49,14 @@ For the draggable view, keep in mind that it has the draggable properties alread
 
 * axis: (String) "x" or "y"
 
+### canRotate ( bool ) { default: false }
+
+* Wether the view can rotate with two fingers
+
+### canResize ( bool ) { default: false }
+
+* Wether the view can resize with two fingers
+
 ## Event Listeners
 
 1. start: will fire on touch start
@@ -66,6 +74,14 @@ For the draggable view, keep in mind that it has the draggable properties alread
 1. click: will fire on click. It contains an index number of the view clicked as well as a reference to the it.
 
 ---
+
+## What's New in Version 1.2
+
+1. Rewrote entire gesture logic
+2. Removed animation to make the behavior the same as the android version   
+(this can be done in javascript)
+3. Added rotation and resizing features
+
 
 ## What's New in Version 1.1
 

@@ -18,8 +18,27 @@
 //  limitations under the License.
 
 #import "TiDraggableViewProxy.h"
-
+#import "TiDraggableView.h"
+#import "TiPoint.h"
 @implementation TiDraggableViewProxy
 
+
+-(id)left
+{
+    TiDraggableView *v = (TiDraggableView *)[self view];
+    return [NSNumber numberWithFloat:v.frame.origin.x];
+}
+
+-(id)center
+{
+    TiDraggableView *v = (TiDraggableView *)[self view];
+    return [[[TiPoint alloc] initWithPoint:v.center] autorelease];
+}
+
+-(id)top
+{
+    TiDraggableView *v = (TiDraggableView *)[self view];
+    return [NSNumber numberWithFloat:v.frame.origin.y];
+}
 
 @end

@@ -19,7 +19,7 @@
 
 #import "TiUIView.h"
 
-@interface TiDraggableView : TiUIView
+@interface TiDraggableView : TiUIView<UIGestureRecognizerDelegate>
 {
 
 	// variables used in the DraggableView
@@ -34,27 +34,32 @@
 	UITouch *touchMove;
 	UITouch *touchStart;
 	
-	float width;
-	float height;
-	float left;
-	float top;
+	CGFloat width;
+	CGFloat height;
+	CGFloat left;
+	CGFloat top;
 	
-	float offsetX;
-	float offsetY;
+	CGFloat offsetX;
+	CGFloat offsetY;
 	
-	float oldLeft;
-	float newLeft;
-	float oldTop;
-	float newTop;
+	CGFloat oldLeft;
+	CGFloat newLeft;
+	CGFloat oldTop;
+	CGFloat newTop;
 	
-	float maxLeft;
-	float minLeft;
-	float maxTop;
-	float minTop;
+	CGFloat maxLeft;
+	CGFloat minLeft;
+	CGFloat maxTop;
+	CGFloat minTop;
 	
+    BOOL hasMaxLeft;
+    BOOL hasMaxTop;
+    BOOL hasMinLeft;
+    BOOL hasMinTop;
+    
 	NSString *axis;
 	
-	bool hasMoved;
+	BOOL hasMoved;
 }
 
 @end

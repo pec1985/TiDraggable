@@ -18,9 +18,10 @@
 //  limitations under the License.
 
 #import "TiDraggableView.h"
+#import "TiDraggableViewProxy.h"
 #import "TiUtils.h"
-
-
+#import "TiRect.h"
+#import "TiPoint.h"
 
 @implementation TiDraggableView
 
@@ -35,6 +36,17 @@
 							[NSNumber numberWithFloat:self.center.x], @"x", 
 							[NSNumber numberWithFloat:self.center.y], @"y",
 							nil];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDetected:)];
+        [self addGestureRecognizer:panRecognizer];
+        [panRecognizer release];
+    }
+    return self;
 }
 
 #pragma mark view resize
@@ -59,156 +71,84 @@
 
 }
 
+
 // ========================================================================
 
 #pragma mark touch events
-
-// touchStart event
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
 {
-	
-	left = self.frame.origin.x;
-	top = self.frame.origin.y;
-	
-	// get the center of the view
-	beginCenter = self.center;
-	
-	
-	touchStart = [touches anyObject];
-	locationStart = [touchStart locationInView:self.superview];
-
-	// get the touch point in relation to it's parent
-	offsetX = locationStart.x - beginCenter.x;
-	offsetY = locationStart.y - beginCenter.y;
-	
-	// boolean to see if the view has moved for the touchEnd event
-	hasMoved = false;
-
-	if([self.proxy _hasListeners:@"start"])
+	if([self.proxy _hasListeners:@"start"] && [panRecognizer state] == UIGestureRecognizerStateBegan)
 	{
+        left = self.frame.origin.x;
+        top = self.frame.origin.y;
 		NSDictionary *tiProps = [NSDictionary dictionaryWithObjectsAndKeys:
-									[NSNumber numberWithFloat:left], @"left",
-									[NSNumber numberWithFloat:top], @"top",
-									[self _center], @"center",
-									nil];
+                                 [NSNumber numberWithFloat:left], @"left",
+                                 [NSNumber numberWithFloat:top], @"top",
+                                 [self _center], @"center",
+                                 nil];
 		[self.proxy fireEvent:@"start" withObject:tiProps];
 	}
-
-	[super touchesBegan:touches withEvent:event];
-}
-
-// touchMove event
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-	// boolean to know if the view has moved. 
-	hasMoved = true;
-	
-	// get the coordinates while moving around
-	touchMove = [touches anyObject];
-	location = [touchMove locationInView:self.superview];
-
-	// get the center of the view to see in chich direction we're moving (before the move)
-	oldLeft = self.center.x;
-	oldTop = self.center.y;
-
-	// in which axis to move
-	if(axis && [axis isEqualToString:@"x"])
+    
+    CGPoint translation = [panRecognizer translationInView:self.superview];
+    CGPoint imageViewPosition = self.center;
+    
+    
+    if(axis && [axis isEqualToString:@"x"])
 	{
-		location.x -= offsetX;
-		location.y = beginCenter.y;
+		imageViewPosition.x += translation.x;
+		imageViewPosition.y = imageViewPosition.y;
 	}
 	else
-	if(axis && [axis isEqualToString:@"y"])
+        if(axis && [axis isEqualToString:@"y"])
+        {
+            imageViewPosition.x = imageViewPosition.x;
+            imageViewPosition.y += translation.y;
+        }
+        else 
+        {
+            imageViewPosition.x += translation.x;
+            imageViewPosition.y += translation.y;
+        }
+    
+    if(hasMaxLeft || hasMaxTop || hasMinLeft || hasMinTop)
+    {
+        CGSize size = self.frame.size;
+        if(imageViewPosition.x - size.width/2 > maxLeft)
+        {
+            imageViewPosition.x = maxLeft + size.width/2;
+        } else
+            if(imageViewPosition.x - size.width/2 < minLeft)
+            {
+                imageViewPosition.x = minLeft + size.width/2;
+            } else
+                if(imageViewPosition.y - size.height/2 > maxTop)
+                {
+                    imageViewPosition.y = maxTop + size.height/2;
+                } else
+                    if(imageViewPosition.y - size.height/2 < minTop)
+                    {
+                        imageViewPosition.y = minTop + size.height/2;
+                    }
+    }
+    
+    
+    self.center = imageViewPosition;
+    [panRecognizer setTranslation:CGPointZero inView:self.superview];
+    
+    
+    
+	if([self.proxy _hasListeners:@"end"] && [panRecognizer state] == UIGestureRecognizerStateEnded)
 	{
-		location.y -= offsetY;
-		location.x = beginCenter.x;
-	}
-	else 
-	{
-		location.x -= offsetX;
-		location.y -= offsetY;
-	}
-
-	// relocate the view
-	self.center = location;
-	
-	// get the center of the view to see in chich direction we're moving (after the move)
-	newLeft = self.center.x;
-	newTop = self.center.y;
-
-	[super touchesMoved:touches withEvent:event];
-}
-
-// touchEnd event
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{	
-	// get the coordinates of the view
-	
-	left = self.frame.origin.x;
-	top = self.frame.origin.y;
-	
-	// do this is the view has moved:
-	if(hasMoved == true)
-	{
-		// IF we have a maxLeft, reposition, reposition accordingly
-		if(oldLeft > newLeft && maxLeft)
-		{
-			left = minLeft;
-		}
-		else if(maxLeft)
-		{
-			left = maxLeft;
-		}
-	
-		// IF we have a maxTop, reposition accordingly
-		if(oldTop > newTop && maxTop)
-		{
-			top = minTop;
-		}
-		else if(maxTop)
-		{
-			top = maxTop;
-		}
-	} else {
-		
-		// if the view has NOT moved, move it (like a click event)
-		if(maxTop)
-		{
-			top = top == maxTop ? minTop : maxTop;
-		}
-		if(maxLeft)
-		{
-			left = left == maxLeft ? minLeft : maxLeft;
-		}
-	}
-	
-	// animate the view
-	[UIView beginAnimations:@"end_dragging" context:nil];
-	[UIView setAnimationDelegate:self];
-	[UIView setAnimationDidStopSelector:@selector(finishAnimation:finished:context:)];
-	self.frame = CGRectMake(left, top, width, height);	
-	[UIView commitAnimations];
-	
-	
-	// reset the hasMoved flag
-	hasMoved = false;
-
-	[super touchesEnded:touches withEvent:event];
-}
-
-- (void)finishAnimation:(NSString *)animationId finished:(BOOL)finished context:(void *)context
-{
-	if([self.proxy _hasListeners:@"end"])
-	{
+        left = self.frame.origin.x;
+        top = self.frame.origin.y;
 		NSDictionary *tiProps = [NSDictionary dictionaryWithObjectsAndKeys:
-									[NSNumber numberWithFloat:left], @"left",
-									[NSNumber numberWithFloat:top], @"top",
-									[self _center], @"center",
-									nil];
+                                 [NSNumber numberWithFloat:left], @"left",
+                                 [NSNumber numberWithFloat:top], @"top",
+                                 [self _center], @"center",
+                                 nil];
 		[self.proxy fireEvent:@"end" withObject:tiProps];								
 	}
-	[[super proxy] setValue:[NSNumber numberWithFloat:left] forKey:@"left"];
-	[[super proxy] setValue:[NSNumber numberWithFloat:top] forKey:@"top"];	
+    
 }
 
 // ========================================================================
@@ -224,26 +164,71 @@
 -(void)setMaxTop_:(id)args
 {
 	ENSURE_SINGLE_ARG(args, NSNumber);
+    hasMaxTop = YES;
 	maxTop = [TiUtils floatValue:args];
 }
 
 -(void)setMaxLeft_:(id)args
 {
 	ENSURE_SINGLE_ARG(args, NSNumber);
+    hasMaxLeft = YES;
 	maxLeft = [TiUtils floatValue:args];
 }
 
 -(void)setMinTop_:(id)args
 {
 	ENSURE_SINGLE_ARG(args, NSNumber);
+    hasMinTop = YES;
 	minTop = [TiUtils floatValue:args];
 }
 
 -(void)setMinLeft_:(id)args
 {
 	ENSURE_SINGLE_ARG(args, NSNumber);
+    hasMinLeft = YES;
 	minLeft = [TiUtils floatValue:args];
 }
+- (void)pinchDetected:(UIPinchGestureRecognizer *)pinchRecognizer
+{
+    CGFloat scale = pinchRecognizer.scale;
+    self.transform = CGAffineTransformScale(self.transform, scale, scale);
+    pinchRecognizer.scale = 1.0;
 
+}
+
+- (void)rotationDetected:(UIRotationGestureRecognizer *)rotationRecognizer
+{
+    CGFloat angle = rotationRecognizer.rotation;
+    self.transform = CGAffineTransformRotate(self.transform, angle);
+    rotationRecognizer.rotation = 0.0;
+
+}
+
+-(void)setCanResize_:(id)args
+{
+    if([TiUtils boolValue:args] == YES)
+    {
+        UIPinchGestureRecognizer *pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchDetected:)];
+        [pinchRecognizer setDelegate:self];
+        [self addGestureRecognizer:pinchRecognizer];
+        [pinchRecognizer release];       
+    }
+}
+
+-(void)setCanRotate_:(id)args
+{
+    if([TiUtils boolValue:args] == YES)
+    {
+        UIRotationGestureRecognizer *rotationRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotationDetected:)];
+        [rotationRecognizer setDelegate:self];
+        [self addGestureRecognizer:rotationRecognizer];
+        [rotationRecognizer release];
+    }
+}
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
 
 @end
