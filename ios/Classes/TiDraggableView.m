@@ -63,8 +63,8 @@
 	{
 		firstTime = YES;
 		// minTop and minLeft are the origin of the view
-		minTop = minTop || frame.origin.y;
-		minLeft = minLeft || frame.origin.x;
+		minTop = minTop == 0.0 ? frame.origin.y : minTop;
+		minLeft = minLeft == 0.0 ? frame.origin.x : minLeft;
 	
 	}
 	[super frameSizeChanged:frame bounds:bounds];
@@ -113,22 +113,22 @@
     if(hasMaxLeft || hasMaxTop || hasMinLeft || hasMinTop)
     {
         CGSize size = self.frame.size;
-        if(imageViewPosition.x - size.width/2 > maxLeft)
+        if(hasMaxLeft && imageViewPosition.x - size.width/2 > maxLeft)
         {
             imageViewPosition.x = maxLeft + size.width/2;
         } else
-            if(imageViewPosition.x - size.width/2 < minLeft)
-            {
-                imageViewPosition.x = minLeft + size.width/2;
-            } else
-                if(imageViewPosition.y - size.height/2 > maxTop)
-                {
-                    imageViewPosition.y = maxTop + size.height/2;
-                } else
-                    if(imageViewPosition.y - size.height/2 < minTop)
-                    {
-                        imageViewPosition.y = minTop + size.height/2;
-                    }
+        if(hasMinLeft && imageViewPosition.x - size.width/2 < minLeft)
+        {
+            imageViewPosition.x = minLeft + size.width/2;
+        } else
+        if(hasMaxTop && imageViewPosition.y - size.height/2 > maxTop)
+        {
+            imageViewPosition.y = maxTop + size.height/2;
+        } else
+        if(hasMinTop && imageViewPosition.y - size.height/2 < minTop)
+        {
+            imageViewPosition.y = minTop + size.height/2;
+        }
     }
     
     
