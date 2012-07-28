@@ -6,14 +6,14 @@
 
 		<!-- Path to your android sdk -->
 
-		<classpathentry kind="lib" path="/Users/penrique/Documents/androidsdk/platforms/android-8/android.jar"/>
-		<classpathentry kind="lib" path="/Users/penrique/Documents/androidsdk/add-ons/addon_google_apis_google_inc_8/libs/maps.jar"/>
+		<classpathentry kind="lib" path="/usr/android-sdk/platforms/android-8/android.jar"/>
+		<classpathentry kind="lib" path="/usr/android-sdk/add-ons/addon-google_apis-google-8/libs/maps.jar"/>
 		
 		<!-- Path to the Titanium android libraries -->
 		
-		<classpathentry kind="lib" path="/Library/Application Support/Titanium/mobilesdk/osx/1.8.2/android/titanium.jar"/>
-		<classpathentry kind="lib" path="/Library/Application Support/Titanium/mobilesdk/osx/1.8.2/android/js.jar"/>
-		<classpathentry kind="lib" path="/Library/Application Support/Titanium/mobilesdk/osx/1.8.2/android/kroll-common.jar"/>
-		<classpathentry kind="lib" path="/Library/Application Support/Titanium/mobilesdk/osx/1.8.2/android/kroll-apt.jar"/>
+		<classpathentry kind="lib" path="/Users/Pedro/Library/Application Support/Titanium/mobilesdk/osx/2.1.0/android/titanium.jar"/>
+		<classpathentry kind="lib" path="/Users/Pedro/Library/Application Support/Titanium/mobilesdk/osx/2.1.0/android/js.jar"/>
+		<classpathentry kind="lib" path="/Users/Pedro/Library/Application Support/Titanium/mobilesdk/osx/2.1.0/android/kroll-common.jar"/>
+		<classpathentry kind="lib" path="/Users/Pedro/Library/Application Support/Titanium/mobilesdk/osx/2.1.0/android/kroll-apt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

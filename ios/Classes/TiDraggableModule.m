@@ -25,7 +25,7 @@
 // this is generated for your module, please do not change it
 -(id)moduleGUID
 {
-	return @"e8c13998-8fa8-4cee-8078-353c27e84d19";
+	return @"b548a1e9-dbc1-48e9-ab85-caaa914fc0eb";
 }
 
 // this is generated for your module, please do not change it
