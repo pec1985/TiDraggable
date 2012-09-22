@@ -4,6 +4,9 @@
 - iPhone: 1.1
 - Android: 1.0
 
+## Compiled zipped module:
+http://cl.ly/1j1a1i350H0Y
+
 ## Description:
 Allows the developer to create a draggable native view without using Javascript to calculate the events.
 
