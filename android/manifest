@@ -15,4 +15,4 @@ name: draggable
 moduleid: ti.draggable
 guid: b548a1e9-dbc1-48e9-ab85-caaa914fc0ea
 platform: android
-minsdk: 1.8.2
+minsdk: 2.1.3.GA
