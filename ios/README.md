@@ -38,7 +38,7 @@ For the draggable view, keep in mind that it has the draggable properties alread
 
 ## Draggable View Properties:
 
-### These will make the view slide to their corresponding positions
+### These will make the view stop at their corresponding positions
 
 * maxLeft: (int)
 * minLeft: (int)
@@ -56,6 +56,10 @@ For the draggable view, keep in mind that it has the draggable properties alread
 ### canResize ( bool ) { default: false }
 
 * Wether the view can resize with two fingers
+
+### isDraggable ( bool ) { default: true }
+
+* Wether the view can will be draggable
 
 ## Event Listeners
 

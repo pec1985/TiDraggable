@@ -44,6 +44,10 @@ Keep in mind that the draggable view has the draggable properties already build 
 
 * axis: (String) "x" or "y"
 
+### isDraggable ( bool ) { default: true }
+
+* Wether the view can will be draggable
+
 ## Event Listeners
 
 1. start: will fire on touch start

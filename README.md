@@ -1,8 +1,11 @@
 # Ti.Draggable Native Module
 
 ## Versions:
-- iPhone: 1.1
-- Android: 1.0
+- iPhone: 1.3
+- Android: 1.2
+
+## Compiled zipped module:
+http://cl.ly/0J3j0O1e3Z3Y
 
 ## Description:
 Allows the developer to create a draggable native view without using Javascript to calculate the events.
