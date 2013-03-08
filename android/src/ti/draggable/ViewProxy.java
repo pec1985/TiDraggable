@@ -23,6 +23,7 @@ import org.appcelerator.titanium.TiContext;
 import org.appcelerator.titanium.TiDimension;
 import org.appcelerator.titanium.proxy.TiViewProxy;
 import org.appcelerator.titanium.util.TiConvert;
+import org.appcelerator.titanium.util.TiUIHelper;
 import org.appcelerator.titanium.view.TiCompositeLayout;
 import org.appcelerator.titanium.view.TiUIView;
 import org.appcelerator.titanium.view.TiCompositeLayout.LayoutArrangement;
@@ -41,26 +42,27 @@ public class ViewProxy extends TiViewProxy {
 	public TiCompositeLayout view;
 	private ViewProxy _proxy;
 	private TiCompositeLayout.LayoutParams _layout;
-	private int oldTop = 0;
-	private int oldLeft = 0;
+	private float oldTop = 0;
+	private float oldLeft = 0;
 	private String directionVertical = "neutral";
 	private String directionHorizontal = "neutral";
 
-	private int positionTop = 0;
-	private int positionLeft = 0;
-	private int tempTop = 0;
-	private int tempLeft = 0;
-	private int maxTop;
-	private int minTop;
-	private int maxLeft;
-	private int minLeft;
+	private float positionTop = 0;
+	private float positionLeft = 0;
+	private float tempTop = 0;
+	private float tempLeft = 0;
+	private float maxTop;
+	private float minTop;
+	private float maxLeft;
+	private float minLeft;
 	private boolean hasMaxTop = false;
 	private boolean hasMinTop = false;
 	private boolean hasMaxLeft = false;
 	private boolean hasMinLeft = false;
 	private boolean hasAxisX = false;
 	private boolean hasAxisY = false;
-
+	private boolean isDraggable = true;
+	
 	// Still working on this
 	private boolean hasListenerStart = false;
 	private boolean hasListenerMove = false;
@@ -88,31 +90,23 @@ public class ViewProxy extends TiViewProxy {
 				}
 			}
 			if (proxy.hasProperty("axis")) {
-				String axis = TiConvert.toString(proxy.getProperty("axis"));
-				Log.d(LCAT, "hasAxis " + axis);
-				_proxy.setAxis(axis);
+				_proxy.setAxis(proxy.getProperty("axis"));
 			}
 			if (proxy.hasProperty("maxLeft")) {
-				float n = TiConvert.toFloat(proxy.getProperty("maxLeft"));
-				Log.d(LCAT, "maxLeft " + n);
-				_proxy.setMaxLeft(n);
+				_proxy.setMaxLeft(proxy.getProperty("maxLeft"));
 			}
 			if (proxy.hasProperty("minLeft")) {
-				float n = TiConvert.toFloat(proxy.getProperty("minLeft"));
-				Log.d(LCAT, "minLeft " + n);
-				_proxy.setMinLeft(n);
+				_proxy.setMinLeft(proxy.getProperty("minLeft"));
 			}
 			if (proxy.hasProperty("maxTop")) {
-				float n = TiConvert.toFloat(proxy.getProperty("maxTop"));
-				Log.d(LCAT, "maxTop " + n);
-				_proxy.setMaxTop(n);
+				_proxy.setMaxTop(proxy.getProperty("maxTop"));
 			}
 			if (proxy.hasProperty("minTop")) {
-				float n = TiConvert.toFloat(proxy.getProperty("minTop"));
-				Log.d(LCAT, "minTop " + n);
-				_proxy.setMinTop(n);
+				_proxy.setMinTop(proxy.getProperty("minTop"));
 			}
-			
+			if(proxy.hasProperty("isDraggable")) {
+				_proxy.setIsDraggable(proxy.getProperty("isDraggable"));
+			}
 			// This is our view
 			view = new TiCompositeLayout(proxy.getActivity(), arrangement);
 			
@@ -124,7 +118,7 @@ public class ViewProxy extends TiViewProxy {
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					// Log.d(LCAT, "Event: "+event.toString());
-					
+					if(!_proxy.isDraggable) return false;
 					// the LayoutParams does not exist when the view is created,
 					// so let's define the variable here and store it
 					_layout = _layout == null ? (LayoutParams) view.getLayoutParams() : _layout;
@@ -135,7 +129,7 @@ public class ViewProxy extends TiViewProxy {
 					
 					// Get the "raw" x and y - which is the x and y in relation to the screen
 					// And declare the ints and reuse them
-					int eventX = Math.round(event.getRawX()),
+					float eventX = Math.round(event.getRawX()),
 						eventY = Math.round(event.getRawY()),
 						_left = 0,
 						_top = 0;
@@ -292,7 +286,7 @@ public class ViewProxy extends TiViewProxy {
 								KrollDict props = new KrollDict();
 								center.put("x", _left + view.getWidth() / 2);
 								center.put("y", _top + view.getHeight() / 2);
-								
+
 								props.put("left", _left);
 								props.put("top", _top);
 								props.put("directionHorizontal", directionHorizontal);
@@ -330,7 +324,8 @@ public class ViewProxy extends TiViewProxy {
 	 */
 	// ------- Axis ------
 	@Kroll.method @Kroll.setProperty
-	public void setAxis(String axis) {
+	public void setAxis(Object a) {
+		String axis = TiConvert.toString(a);
 		if (axis.equals("x")) {
 			this.hasAxisX = true;
 		} else if (axis.equals("y")) {
@@ -348,43 +343,53 @@ public class ViewProxy extends TiViewProxy {
 
 	// ------- Max Top ------
 	@Kroll.method @Kroll.setProperty
-	public void setMaxTop(float n) {
+	public void setMaxTop(Object n) {
 		this.hasMaxTop = true;
-		this.maxTop = (int) n;
+		this.maxTop = TiUIHelper.getRawSize(TiConvert.toString(n), getActivity());
 	}
 	@Kroll.method @Kroll.getProperty
-	public int getMaxTop() {
+	public float getMaxTop() {
 		return this.maxTop;
 	}
 	// ------- Min Top ------
 	@Kroll.method @Kroll.setProperty
-	public void setMinTop(float n) {
+	public void setMinTop(Object n) {
 		this.hasMinTop = true;
-		this.minTop = (int) n;
+		this.minTop = TiUIHelper.getRawSize(TiConvert.toString(n), getActivity());
 	}
 	@Kroll.method @Kroll.getProperty
-	public int getMinTop() {
+	public float getMinTop() {
 		return this.minTop;
 	}
 	// ------- Max Left ------
 	@Kroll.method @Kroll.setProperty
-	public void setMaxLeft(float n) {
+	public void setMaxLeft(Object n) {
 		this.hasMaxLeft = true;
-		this.maxLeft = (int) n;
+		this.maxLeft = TiUIHelper.getRawSize(TiConvert.toString(n), getActivity());
 	}
 	@Kroll.method @Kroll.getProperty
-	public int getMaxLeft() {
+	public float getMaxLeft() {
 		return this.maxLeft;
 	}
 	// ------- Min Left ------
 	@Kroll.method @Kroll.setProperty
-	public void setMinLeft(float n) {
+	public void setMinLeft(Object n) {
 		this.hasMinLeft = true;
-		this.minLeft = (int) n;
+		this.minLeft = TiUIHelper.getRawSize(TiConvert.toString(n), getActivity());
 	}
 	@Kroll.method @Kroll.getProperty
-	public int getMinLeft() {
+	public float getMinLeft() {
 		return this.minLeft;
+	}
+	// ------ is draggable -----
+	@Kroll.method @Kroll.setProperty
+	public void setIsDraggable(Object v) {
+		this.isDraggable = TiConvert.toBoolean(v);
+	}
+	
+	@Kroll.method @Kroll.getProperty
+	public boolean getIsDraggable() {
+		return this.isDraggable;
 	}
 
 	@Override

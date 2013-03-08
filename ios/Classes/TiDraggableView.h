@@ -56,6 +56,7 @@
     BOOL hasMaxTop;
     BOOL hasMinLeft;
     BOOL hasMinTop;
+    BOOL isDraggable;
     
 	NSString *axis;
 	

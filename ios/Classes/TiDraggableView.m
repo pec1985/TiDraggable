@@ -30,18 +30,16 @@
 	[super dealloc];
 }
 
--(NSDictionary *)_center
+-(TiPoint *)_center
 {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-							[NSNumber numberWithFloat:self.center.x], @"x", 
-							[NSNumber numberWithFloat:self.center.y], @"y",
-							nil];
+    return [[[TiPoint alloc] initWithPoint:self.center] autorelease];
 }
 
 - (id)init
 {
     self = [super init];
     if (self) {
+        isDraggable = YES;
         UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDetected:)];
         [self addGestureRecognizer:panRecognizer];
         [panRecognizer release];
@@ -77,6 +75,7 @@
 #pragma mark touch events
 - (void)panDetected:(UIPanGestureRecognizer *)panRecognizer
 {
+    if(!isDraggable) return;
 	if([self.proxy _hasListeners:@"start"] && [panRecognizer state] == UIGestureRecognizerStateBegan)
 	{
         left = self.frame.origin.x;
@@ -136,20 +135,49 @@
     [panRecognizer setTranslation:CGPointZero inView:self.superview];
     
     
-    
-	if([self.proxy _hasListeners:@"end"] && [panRecognizer state] == UIGestureRecognizerStateEnded)
+    if([panRecognizer state] == UIGestureRecognizerStateEnded)
 	{
-        left = self.frame.origin.x;
-        top = self.frame.origin.y;
-		NSDictionary *tiProps = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 [NSNumber numberWithFloat:left], @"left",
-                                 [NSNumber numberWithFloat:top], @"top",
-                                 [self _center], @"center",
-                                 nil];
-		[self.proxy fireEvent:@"end" withObject:tiProps];								
-	}
+
+        TiPoint *center = [self _center];
+
+        // NSLog(@"END: center = %@", NSStringFromCGPoint([(TiPoint *)center point]));
+        
+//        [(TiViewProxy *)[self proxy] setCenter:center];
+//        [[self proxy] setValue:center forKey:@"center"];
+
+        if([self.proxy _hasListeners:@"end"])
+        {
+            left = self.frame.origin.x;
+            top = self.frame.origin.y;
+            NSDictionary *tiProps = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSNumber numberWithFloat:left], @"left",
+                                     [NSNumber numberWithFloat:top], @"top",
+                                     center, @"center",
+                                     nil];
+            [self.proxy fireEvent:@"end" withObject:tiProps];								
+        }
+    }
     
 }
+
+- (void)pinchDetected:(UIPinchGestureRecognizer *)pinchRecognizer
+{
+    if(!isDraggable) return;
+    CGFloat scale = pinchRecognizer.scale;
+    self.transform = CGAffineTransformScale(self.transform, scale, scale);
+    pinchRecognizer.scale = 1.0;
+    
+}
+
+- (void)rotationDetected:(UIRotationGestureRecognizer *)rotationRecognizer
+{
+    if(!isDraggable) return;
+    CGFloat angle = rotationRecognizer.rotation;
+    self.transform = CGAffineTransformRotate(self.transform, angle);
+    rotationRecognizer.rotation = 0.0;
+    
+}
+
 
 // ========================================================================
 
@@ -159,6 +187,19 @@
 {
 	ENSURE_SINGLE_ARG(args, NSString);
 	axis = args;
+}
+
+-(void)setBackgroundColour_:(id)args
+{
+    ENSURE_SINGLE_ARG(args, NSString);
+    
+    args = @"green";
+    
+    // NSLog(@" -=-=-=-=-=-=- ");
+    // NSLog(@"args value: %@", args);
+    // NSLog(@"args class: %@", [args class]);
+    
+    [self setBackgroundColor: [[TiUtils colorValue:args] color] ];
 }
 
 -(void)setMaxTop_:(id)args
@@ -188,21 +229,6 @@
     hasMinLeft = YES;
 	minLeft = [TiUtils floatValue:args];
 }
-- (void)pinchDetected:(UIPinchGestureRecognizer *)pinchRecognizer
-{
-    CGFloat scale = pinchRecognizer.scale;
-    self.transform = CGAffineTransformScale(self.transform, scale, scale);
-    pinchRecognizer.scale = 1.0;
-
-}
-
-- (void)rotationDetected:(UIRotationGestureRecognizer *)rotationRecognizer
-{
-    CGFloat angle = rotationRecognizer.rotation;
-    self.transform = CGAffineTransformRotate(self.transform, angle);
-    rotationRecognizer.rotation = 0.0;
-
-}
 
 -(void)setCanResize_:(id)args
 {
@@ -213,6 +239,11 @@
         [self addGestureRecognizer:pinchRecognizer];
         [pinchRecognizer release];       
     }
+}
+
+-(void)setDraggable_:(id)args
+{
+    isDraggable = [TiUtils boolValue:args];
 }
 
 -(void)setCanRotate_:(id)args
