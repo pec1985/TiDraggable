@@ -134,6 +134,19 @@
     self.center = imageViewPosition;
     [panRecognizer setTranslation:CGPointZero inView:self.superview];
     
+    if([panRecognizer state] == UIGestureRecognizerStateChanged && [self.proxy _hasListeners:@"move"])
+    {
+        left = self.frame.origin.x;
+        top = self.frame.origin.y;
+        TiPoint *center = [self _center];
+        NSDictionary *tiProps = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [NSNumber numberWithFloat:left], @"left",
+                                 [NSNumber numberWithFloat:top], @"top",
+                                 center, @"center",
+                                 nil];
+        [self.proxy fireEvent:@"move" withObject:tiProps];
+
+    }
     
     if([panRecognizer state] == UIGestureRecognizerStateEnded)
 	{
