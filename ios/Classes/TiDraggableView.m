@@ -41,8 +41,11 @@
     if (self) {
         isDraggable = YES;
         UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDetected:)];
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self action:@selector(tapDetected:)];
         [self addGestureRecognizer:panRecognizer];
+        [self addGestureRecognizer:tapRecognizer];
         [panRecognizer release];
+        [tapRecognizer release];
     }
     return self;
 }
@@ -189,6 +192,25 @@
     self.transform = CGAffineTransformRotate(self.transform, angle);
     rotationRecognizer.rotation = 0.0;
     
+}
+
+
+-(void)tapDetected:(UITapGestureRecognizer *) sender
+{
+    if ( sender.state == UIGestureRecognizerStateEnded ) {
+        if([self.proxy _hasListeners:@"singletap"])
+        {
+            TiPoint *center = [self _center];
+            left = self.frame.origin.x;
+            top = self.frame.origin.y;
+            NSDictionary *tiProps = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSNumber numberWithFloat:left], @"left",
+                                     [NSNumber numberWithFloat:top], @"top",
+                                     center, @"center",
+                                     nil];
+            [self.proxy fireEvent:@"singletap" withObject:tiProps];
+        }
+    }
 }
 
 
