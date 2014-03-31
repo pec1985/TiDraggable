@@ -64,7 +64,7 @@ For the draggable view, keep in mind that it has the draggable properties alread
 ## Event Listeners
 
 1. start: will fire on touch start
-2. stop: will fire on when the view has finished moving
+2. end: will fire on when the view has finished moving
 
 
 ## Infinite Scroll View Properties:
