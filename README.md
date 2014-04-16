@@ -1,3 +1,9 @@
+## Note:
+This version of the module will not be maintained anymore as I do not have the time for it. Please take a look at some of the forks for updated and maintained modules.
+
+[Seth Benjamin](https://github.com/animecyc) has done a great job, thanks!  
+https://github.com/animecyc/TiDraggable
+
 # Ti.Draggable Native Module
 
 ## Versions:
