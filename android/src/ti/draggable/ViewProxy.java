@@ -35,6 +35,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+
 @Kroll.proxy(creatableInModule = DraggableModule.class)
 public class ViewProxy extends TiViewProxy {
 	private static final String LCAT = "TiDraggable";
@@ -108,7 +109,15 @@ public class ViewProxy extends TiViewProxy {
 				_proxy.setIsDraggable(proxy.getProperty("isDraggable"));
 			}
 			// This is our view
-			view = new TiCompositeLayout(proxy.getActivity(), arrangement);
+			view = new TiCompositeLayout(proxy.getActivity(), arrangement) {
+                
+                public boolean onInterceptTouchEvent(MotionEvent me) {
+                    return true;
+                }
+                
+            };
+            
+            
 			
 			/**
 			 * Logs commented out from OnTouchListener
@@ -307,10 +316,14 @@ public class ViewProxy extends TiViewProxy {
 			
 			// Add the event to the view
 			view.setOnTouchListener(listener);
+            
 			// Set the view to be the "native view"
 			setNativeView(view);
 			Log.d(LCAT, "Custom view created");
 		}
+        
+        
+        
 		
 		
 		@Override
