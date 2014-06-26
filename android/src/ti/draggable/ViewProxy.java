@@ -12,7 +12,7 @@
  *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
- *   
+ *
  */
 package ti.draggable;
 
@@ -38,7 +38,7 @@ import android.view.View.OnTouchListener;
 @Kroll.proxy(creatableInModule = DraggableModule.class)
 public class ViewProxy extends TiViewProxy {
 	private static final String LCAT = "TiDraggable";
-
+    
 	public TiCompositeLayout view;
 	private ViewProxy _proxy;
 	private TiCompositeLayout.LayoutParams _layout;
@@ -46,7 +46,7 @@ public class ViewProxy extends TiViewProxy {
 	private float oldLeft = 0;
 	private String directionVertical = "neutral";
 	private String directionHorizontal = "neutral";
-
+    
 	private float positionTop = 0;
 	private float positionLeft = 0;
 	private float tempTop = 0;
@@ -63,13 +63,8 @@ public class ViewProxy extends TiViewProxy {
 	private boolean hasAxisY = false;
 	private boolean isDraggable = true;
 	
-	// Still working on this
-	private boolean hasListenerStart = false;
-	private boolean hasListenerMove = false;
-	private boolean hasListenerEnd = false;
-	
 	public ViewProxy() {}
-
+    
 	public ViewProxy(TiContext tiContext) {
 		this();
 		_proxy = this;
@@ -115,6 +110,9 @@ public class ViewProxy extends TiViewProxy {
 			 * It can really impact the performance
 			 */
 			OnTouchListener listener = new OnTouchListener() {
+                
+                private boolean wasMoved = false;
+                
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					// Log.d(LCAT, "Event: "+event.toString());
@@ -130,35 +128,22 @@ public class ViewProxy extends TiViewProxy {
 					// Get the "raw" x and y - which is the x and y in relation to the screen
 					// And declare the ints and reuse them
 					float eventX = Math.round(event.getRawX()),
-						eventY = Math.round(event.getRawY()),
-						_left = 0,
-						_top = 0;
+                    eventY = Math.round(event.getRawY()),
+                    _left = 0,
+                    _top = 0;
 					
 					// What to do in each case??
 					switch (event.getAction()) {
 						case MotionEvent.ACTION_DOWN:
 							// Log.d(LCAT, "MotionEvent.ACTION_DOWN");
 							
-							// Check for event listeners here, we need to be sure that the JS is loaded
-							// Also, store in boolean variable, we don't need to check every time, do we?
-							// I also do my check here in the ACTION_DOWN because it only gets called once on each move
-							if (hasListenerStart == false) {
-								hasListenerStart = _proxy.hasListeners("start");
-							}
-							if (hasListenerMove == false) {
-								hasListenerMove = _proxy.hasListeners("move");
-							}
-							if (hasListenerEnd == false) {
-								hasListenerEnd = _proxy.hasListeners("end");
-							}
-							
-							// Get the difference between the touch and the left/top of the view
+                            // Get the difference between the touch and the left/top of the view
 							tempLeft = (positionLeft - eventX);
 							tempTop = (positionTop - eventY);
 							
 							// Log.d(LCAT, "MotionEvent.ACTION_DOWN - tempLeft: "+tempLeft);
 							// Log.d(LCAT, "MotionEvent.ACTION_DOWN - tempTop: "+tempTop);
-							if (hasListenerStart) {
+							if (_proxy.hasListeners("start")) {
 								KrollDict props = new KrollDict();
 								props.put("left", positionLeft);
 								props.put("top", positionTop);
@@ -169,10 +154,13 @@ public class ViewProxy extends TiViewProxy {
 								_proxy.fireEvent("start", props);
 							}
 							
-						break;
+                            break;
 						case MotionEvent.ACTION_MOVE:
 							// Log.d(LCAT, "MotionEvent.ACTION_MOVE");
 							
+                            // If the item is moved, updated wasMoved instance variable.
+                            wasMoved = true;
+                            
 							// If axis "y", leave the left position intact
 							if (_proxy.hasAxisY) {
 								_left = positionLeft;
@@ -181,11 +169,11 @@ public class ViewProxy extends TiViewProxy {
 							// otherwise, adjust the "left" variable
 							else {
 								_left = (eventX + tempLeft);
-								// Don't move more that maxLeft 
+								// Don't move more that maxLeft
 								if (_proxy.hasMaxLeft && _proxy.maxLeft < _left) {
 									_left = _proxy.maxLeft;
 								}
-								// Don't move more that minLeft 
+								// Don't move more that minLeft
 								if (_proxy.hasMinLeft && _proxy.minLeft > _left) {
 									_left = _proxy.minLeft;
 								}
@@ -200,11 +188,11 @@ public class ViewProxy extends TiViewProxy {
 							// otherwise, adjust the "top" variable
 							else {
 								_top = (eventY + tempTop);
-								// Don't move more that maxTop 
+								// Don't move more that maxTop
 								if (_proxy.hasMaxTop == true && _proxy.maxTop < _top) {
 									_top = _proxy.maxTop;
 								}
-								// Don't move more that minTop 
+								// Don't move more that minTop
 								if (_proxy.hasMinTop == true && _proxy.minTop > _top) {
 									_top = _proxy.minTop;
 								}
@@ -232,7 +220,7 @@ public class ViewProxy extends TiViewProxy {
 							} else {
 								directionHorizontal = "neutral"+"";
 							}
-
+                            
 							oldTop = _top;
 							oldLeft = _left;
 							
@@ -241,7 +229,8 @@ public class ViewProxy extends TiViewProxy {
 							// set the layout on the view
 							view.setLayoutParams(_layout);
 							
-							if (hasListenerMove) {
+                            
+                            if(_proxy.hasListeners("move")) {
 								KrollDict props = new KrollDict();
 								props.put("left", _left);
 								props.put("top", _top);
@@ -252,7 +241,7 @@ public class ViewProxy extends TiViewProxy {
 								_proxy.fireEvent("move", props);
 							}
 							
-						break;
+                            break;
 						case MotionEvent.ACTION_UP:
 							// Log.d(LCAT, "MotionEvent.ACTION_UP");
 							
@@ -280,26 +269,32 @@ public class ViewProxy extends TiViewProxy {
 							_layout.optionTop = new TiDimension(_top, TiDimension.TYPE_LEFT);
 							view.setLayoutParams(_layout);
 							
-							if (hasListenerEnd) {
-
+                            // If the view was not moved, let's fire a singletap event, otherwise treat it like an end event.
+                            String eventToFire = wasMoved ? "end" : "singletap";
+                            
+							if (_proxy.hasListeners(eventToFire)) {
+                                
 								KrollDict center = new KrollDict();
 								KrollDict props = new KrollDict();
 								center.put("x", _left + view.getWidth() / 2);
 								center.put("y", _top + view.getHeight() / 2);
-
+                                
 								props.put("left", _left);
 								props.put("top", _top);
 								props.put("directionHorizontal", directionHorizontal);
 								props.put("directionVertical", directionVertical);
 								
 								props.put("center", center);
-								_proxy.fireEvent("end", props);
+								_proxy.fireEvent(eventToFire, props);
 							}
 							// Log.d(LCAT, "MotionEvent.ACTION_UP - DONE");
 							positionLeft = 0;
 							positionTop = 0;
-						break;
-					}	
+                            
+                            // Reset wasMoved instance variable.
+                            wasMoved = false;
+                            break;
+					}
 					// Not too sure about this one, true or false?
 					return true;
 				}
@@ -319,7 +314,7 @@ public class ViewProxy extends TiViewProxy {
 		}
 	}
 	
-	/** 
+	/**
 	 * Public API
 	 */
 	// ------- Axis ------
@@ -340,7 +335,7 @@ public class ViewProxy extends TiViewProxy {
 	public boolean getAxisX() {
 		return this.hasAxisX;
 	}
-
+    
 	// ------- Max Top ------
 	@Kroll.method @Kroll.setProperty
 	public void setMaxTop(Object n) {
@@ -391,7 +386,7 @@ public class ViewProxy extends TiViewProxy {
 	public boolean getIsDraggable() {
 		return this.isDraggable;
 	}
-
+    
 	@Override
 	public TiUIView createView(Activity activity) {
 		return new PEDraggableView(this);
